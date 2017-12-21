@@ -10,7 +10,7 @@ class WCSG_Cart {
 	 * Setup hooks & filters, when the class is initialised.
 	 */
 	public static function init() {
-		add_filter( 'woocommerce_cart_item_name', __CLASS__ . '::add_gifting_option_cart', 1, 3 );
+		add_filter( 'woocommerce_cart_item_name', __CLASS__ . '::add_gifting_option_cart', 21, 3 );
 
 		add_filter( 'woocommerce_widget_cart_item_quantity', __CLASS__ . '::add_gifting_option_minicart', 1, 3 );
 

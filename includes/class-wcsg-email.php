@@ -65,7 +65,7 @@ class WCSG_Email {
 	public static function hook_email() {
 
 		add_action( 'woocommerce_created_customer', __CLASS__ . '::maybe_remove_wc_new_customer_email', 9, 2 );
-		add_action( 'woocommerce_created_customer', __CLASS__ . '::send_new_recient_user_email', 10, 3 );
+		add_action( 'woocommerce_created_customer', __CLASS__ . '::send_new_recipient_user_email', 10, 3 );
 		add_action( 'woocommerce_created_customer', __CLASS__ . '::maybe_reattach_wc_new_customer_email', 11, 2 );
 
 		add_action( 'woocommerce_order_status_pending_to_processing', __CLASS__ . '::maybe_send_recipient_order_emails' );
@@ -177,7 +177,7 @@ class WCSG_Email {
 	 * @param array $new_customer_data
 	 * @param bool $password_generated Whether the password has been generated for the customer
 	 */
-	public static function send_new_recient_user_email( $customer_id, $new_customer_data, $password_generated ) {
+	public static function send_new_recipient_user_email( $customer_id, $new_customer_data, $password_generated ) {
 		foreach ( WC()->cart->cart_contents as $key => $item ) {
 			if ( isset( $item['wcsg_gift_recipients_email'] ) ) {
 				if ( $item['wcsg_gift_recipients_email'] == $new_customer_data['user_email'] ) {
@@ -280,6 +280,19 @@ class WCSG_Email {
 	 */
 	public static function remove_sending_downloadable_email_flag() {
 		self::$sending_downloadable_email = '';
+	}
+
+	/**
+	 * If a cart item contains recipient data matching the new customer, init the mailer and call the notification for new recipient customers.
+	 *
+	 * @param int $customer_id The ID of the new customer being created
+	 * @param array $new_customer_data
+	 * @param bool $password_generated Whether the password has been generated for the customer
+	 * @deprecated 2.0
+	 */
+	public static function send_new_recient_user_email( $customer_id, $new_customer_data, $password_generated ) {
+		_deprecated_function( __METHOD__, '2.0.0', __CLASS__ . '::send_new_recipient_user_email()' );
+		self::send_new_recipient_user_email( $customer_id, $new_customer_data, $password_generated );
 	}
 }
 WCSG_Email::init();
