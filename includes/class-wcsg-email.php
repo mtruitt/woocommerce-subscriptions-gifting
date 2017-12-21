@@ -281,5 +281,18 @@ class WCSG_Email {
 	public static function remove_sending_downloadable_email_flag() {
 		self::$sending_downloadable_email = '';
 	}
+
+	/**
+	 * If a cart item contains recipient data matching the new customer, init the mailer and call the notification for new recipient customers.
+	 *
+	 * @param int $customer_id The ID of the new customer being created
+	 * @param array $new_customer_data
+	 * @param bool $password_generated Whether the password has been generated for the customer
+	 * @deprecated 2.0
+	 */
+	public static function send_new_recient_user_email( $customer_id, $new_customer_data, $password_generated ) {
+		_deprecated_function( __METHOD__, '2.0.0', __CLASS__ . '::send_new_recipient_user_email()' );
+		self::send_new_recipient_user_email( $customer_id, $new_customer_data, $password_generated );
+	}
 }
 WCSG_Email::init();
