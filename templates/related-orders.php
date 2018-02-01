@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<th class="order-number"><span class="nobr"><?php esc_html_e( 'Order', 'woocommerce-subscriptions-gifting' ); ?></span></th>
 			<th class="order-date"><span class="nobr"><?php esc_html_e( 'Date', 'woocommerce-subscriptions-gifting' ); ?></span></th>
 			<th class="order-status"><span class="nobr"><?php esc_html_e( 'Status', 'woocommerce-subscriptions-gifting' ); ?></span></th>
-			<th class="order-total"><span class="nobr"><?php esc_html_e( 'Total', 'woocommerce-subscriptions-gifting' ); ?></span></th>
 			<th class="order-actions">&nbsp;</th>
 		</tr>
 	</thead>
@@ -55,12 +54,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 							echo '</br><small>' . esc_html( 'Purchased by ' . $order->get_user()->display_name ) . '</small>';
 						}
 					}
-					?>
-				</td>
-				<td class="order-total" data-title="<?php esc_attr_e( 'Total', 'woocommerce-subscriptions-gifting' ); ?>">
-					<?php
-					// translators: price for number of items
-					echo wp_kses_post( sprintf( _n( '%1$s for %2$s item', '%1$s for %2$s items', $item_count, 'woocommerce-subscriptions-gifting' ), $order->get_formatted_order_total(), $item_count ) );
 					?>
 				</td>
 				<td class="order-actions">
