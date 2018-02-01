@@ -316,7 +316,8 @@ class WCS_Gifting {
 	public static function get_view_subscription_template( $located, $template_name, $args ) {
 		global $wp;
 		if ( 'myaccount/view-subscription.php' == $template_name ) {
-			if ( WCS_Gifting::is_gifted_subscription( $wp->query_vars['view-subscription'] ) ) {
+			$subscription = wcs_get_subscription( $wp->query_vars['view-subscription'] );
+			if ( WCS_Gifting::is_gifted_subscription( $subscription ) && get_current_user_id() == WCS_Gifting::get_recipient_user( $subscription ) ) {
 				$located = wc_locate_template( 'view-subscription.php', '' , plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
 			}
 		}
