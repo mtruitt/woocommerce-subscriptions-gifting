@@ -166,6 +166,6 @@ wc_print_notices();
 
 <?php do_action( 'woocommerce_subscription_details_after_subscription_table', $subscription ); ?>
 
-<?php wc_get_template( 'order/order-details-customer.php', array( 'order' => $subscription ) ); ?>
+<?php wc_get_template( 'order-details-customer.php', array( 'order' => $subscription ), '', plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/'  ); ?>
 
 <div class="clear"></div>
