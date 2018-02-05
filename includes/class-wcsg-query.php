@@ -11,11 +11,16 @@ class WCSG_Query extends WCS_Query {
 	 */
 	public function __construct() {
 
-		parent::__construct();
+		add_action( 'init', array( $this, 'add_endpoints' ) );
+
+		add_filter( 'the_title', array( $this, 'change_endpoint_title' ), 11, 1 );
 
 		if ( ! is_admin() ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+			add_filter( 'woocommerce_get_breadcrumb', array( $this, 'add_breadcrumb' ), 10 );
 		}
+
+		$this->init_query_vars();
 	}
 
 	/**
