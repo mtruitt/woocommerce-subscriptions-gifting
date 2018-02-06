@@ -62,6 +62,7 @@ class WCS_Unit_Tests_Bootstrap {
 
 		// load WooCommerce Subscriptions Gifting
 		require_once( $this->plugin_dir . '/woocommerce-subscriptions-gifting.php' );
+		wcsg_load();		
 	}
 
 	/**

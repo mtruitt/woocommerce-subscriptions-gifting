@@ -38,40 +38,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-
-/**
- * Check if WooCommerce and Subscriptions are active.
- */
-if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) || version_compare( get_option( 'woocommerce_db_version' ), WCS_Gifting::$wc_minimum_supported_version, '<' ) ) {
-	add_action( 'admin_notices', 'WCS_Gifting::plugin_dependency_notices' );
-	return;
-}
-
-if ( ! is_plugin_active( 'woocommerce-subscriptions/woocommerce-subscriptions.php' ) || version_compare( get_option( 'woocommerce_subscriptions_active_version' ), WCS_Gifting::$wcs_minimum_supported_version, '<' ) ) {
-	add_action( 'admin_notices', 'WCS_Gifting::plugin_dependency_notices' );
-	return;
-}
-
-require_once( 'includes/class-wcsg-product.php' );
-
-require_once( 'includes/class-wcsg-cart.php' );
-
-require_once( 'includes/class-wcsg-checkout.php' );
-
-require_once( 'includes/class-wcsg-recipient-management.php' );
-
-require_once( 'includes/class-wcsg-recipient-details.php' );
-
-require_once( 'includes/class-wcsg-email.php' );
-
-require_once( 'includes/class-wcsg-download-handler.php' );
-
-require_once( 'includes/class-wcsg-admin.php' );
-
-require_once( 'includes/class-wcsg-recipient-addresses.php' );
-
-require_once( 'includes/wcsg-compatibility-functions.php' );
 
 class WCS_Gifting {
 
@@ -93,7 +59,7 @@ class WCS_Gifting {
 		add_action( 'wp_enqueue_scripts', __CLASS__ . '::gifting_scripts' );
 
 		// Needs to run after Subscriptions has loaded its dependant classes
-		add_action( 'plugins_loaded', __CLASS__ . '::load_dependant_classes' , 11 );
+		self::load_dependant_classes();
 
 		add_action( 'wc_get_template', __CLASS__ . '::get_recent_orders_template', 1 , 3 );
 
@@ -335,20 +301,19 @@ class WCS_Gifting {
 	 * supported version.
 	 */
 	public static function plugin_dependency_notices() {
-
-		if ( ! is_woocommerce_active() ) {
+		if ( ! class_exists( 'WooCommerce' ) ) {
 			self::output_plugin_dependency_notice( 'WooCommerce' );
 		} else if ( version_compare( get_option( 'woocommerce_db_version' ), WCS_Gifting::$wc_minimum_supported_version, '<' ) ) {
 			self::output_plugin_dependency_notice( 'WooCommerce', WCS_Gifting::$wc_minimum_supported_version );
 		}
 
-		if ( ! is_plugin_active( 'woocommerce-subscriptions/woocommerce-subscriptions.php' ) ) {
+		if ( ! class_exists( 'WC_Subscriptions' ) ) {
 			self::output_plugin_dependency_notice( 'WooCommerce Subscriptions' );
 		} else if ( version_compare( get_option( 'woocommerce_subscriptions_active_version' ), WCS_Gifting::$wcs_minimum_supported_version, '<' ) ) {
 			self::output_plugin_dependency_notice( 'WooCommerce Subscriptions', WCS_Gifting::$wcs_minimum_supported_version );
 		}
 
-		if ( is_plugin_active( 'woocommerce-memberships/woocommerce-memberships.php' ) && version_compare( get_option( 'wc_memberships_version' ), WCS_Gifting::$wcm_minimum_supported_version, '<' ) ) {
+		if ( class_exists( 'WC_Memberships' ) && version_compare( get_option( 'wc_memberships_version' ), WCS_Gifting::$wcm_minimum_supported_version, '<' ) ) {
 			self::output_plugin_dependency_notice( 'WooCommerce Memberships', WCS_Gifting::$wcm_minimum_supported_version );
 		}
 
@@ -631,4 +596,36 @@ class WCS_Gifting {
 		_deprecated_function( __METHOD__, '2.0.0', 'flush_rewrite_rules()' );
 	}
 }
-WCS_Gifting::init();
+
+/**
+ * @since 2.0.1
+ */
+function wcsg_load() {
+	/**
+	 * Check if WooCommerce and Subscriptions are active.
+	 */
+	if ( ! class_exists( 'WooCommerce' ) || version_compare( get_option( 'woocommerce_db_version' ), WCS_Gifting::$wc_minimum_supported_version, '<' ) ) {
+		add_action( 'admin_notices', 'WCS_Gifting::plugin_dependency_notices' );
+		return;
+	}
+
+	if ( ! class_exists( 'WC_Subscriptions' ) || version_compare( get_option( 'woocommerce_subscriptions_active_version' ), WCS_Gifting::$wcs_minimum_supported_version, '<' ) ) {
+		add_action( 'admin_notices', 'WCS_Gifting::plugin_dependency_notices' );
+		return;
+	}
+
+	require_once( 'includes/class-wcsg-product.php' );
+	require_once( 'includes/class-wcsg-cart.php' );
+	require_once( 'includes/class-wcsg-checkout.php' );
+	require_once( 'includes/class-wcsg-recipient-management.php' );
+	require_once( 'includes/class-wcsg-recipient-details.php' );
+	require_once( 'includes/class-wcsg-email.php' );
+	require_once( 'includes/class-wcsg-download-handler.php' );
+	require_once( 'includes/class-wcsg-admin.php' );
+	require_once( 'includes/class-wcsg-recipient-addresses.php' );
+	require_once( 'includes/wcsg-compatibility-functions.php' );
+
+	WCS_Gifting::init();
+}
+add_action( 'plugins_loaded', 'wcsg_load', 11 );
+
