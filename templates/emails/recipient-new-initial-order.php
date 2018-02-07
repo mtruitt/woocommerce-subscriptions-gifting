@@ -49,7 +49,6 @@ foreach ( $subscriptions as $subscription_id ) {
 		<tr>
 			<th class="td" scope="col" style="text-align:left;"><?php esc_html_e( 'Product', 'woocommerce-subscriptions-gifting' ); ?></th>
 			<th class="td" scope="col" style="text-align:left;"><?php esc_html_e( 'Quantity', 'woocommerce-subscriptions-gifting' ); ?></th>
-			<th class="td" scope="col" style="text-align:left;"><?php esc_html_e( 'Price', 'woocommerce-subscriptions-gifting' ); ?></th>
 		</tr>
 	<tbody>
 		<?php echo wp_kses_post( WC_Subscriptions_Email::email_order_items_table( $subscription, array(
