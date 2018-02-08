@@ -53,14 +53,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 </table>
 <?php endif; ?>
 
-<?php $text_align = is_rtl() ? 'right' : 'left';?>
 <table id="addresses" cellspacing="0" cellpadding="0" style="width: 100%; vertical-align: top; margin-bottom: 40px; padding:0;" border="0">
 	<tr>
 		<?php if ( ! wc_ship_to_billing_address_only() && $order->needs_shipping_address() && ( $shipping = $order->get_formatted_shipping_address() ) ) : ?>
-			<td style="text-align:<?php echo $text_align; ?>; font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; padding:0;" valign="top" width="50%">
-				<h2><?php _e( 'Shipping address', 'woocommerce-subscriptions-gifting' ); ?></h2>
+			<td style="font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; padding:0;" valign="top" width="50%">
+				<h2><?php echo esc_html__( 'Shipping address', 'woocommerce-subscriptions-gifting' ); ?></h2>
 
-				<address class="address"><?php echo $shipping; ?></address>
+				<address class="address"><?php echo sprintf( __( '%s', 'woocommerce-subscriptions-gifting' ), $shipping ); ?></address>
 			</td>
 		<?php endif; ?>
 	</tr>

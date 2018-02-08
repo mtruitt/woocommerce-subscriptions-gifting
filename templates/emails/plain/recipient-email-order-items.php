@@ -24,7 +24,7 @@ foreach ( $items as $item_id => $item ) {
 		echo strip_tags( wc_display_item_meta( $item, array(
 			'before'    => "\n- ",
 			'separator' => "\n- ",
-			'after'     => "",
+			'after'     => '',
 			'echo'      => false,
 			'autop'     => false,
 		) ) );
@@ -39,7 +39,6 @@ foreach ( $items as $item_id => $item ) {
 	if ( $show_purchase_note && is_object( $product ) && ( $purchase_note = $product->get_purchase_note() ) ) {
 		echo sprintf( __( 'Purchase Note: %s', 'woocommerce-subscriptions-gifting' ), do_shortcode( $purchase_note ) ) . "\n\n";
 	}
-
 }
 
 echo "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
