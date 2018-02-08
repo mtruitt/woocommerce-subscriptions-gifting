@@ -21,9 +21,9 @@ class WCSG_Email_Processing_Renewal_Order extends WCS_Email_Processing_Renewal_O
 		$this->heading        = __( 'Thank you for your order', 'woocommerce-subscriptions-gifting' );
 		$this->subject        = __( 'Your {blogname} renewal order receipt from {order_date}', 'woocommerce-subscriptions-gifting' );
 
-		$this->template_html  = 'emails/customer-processing-renewal-order.php';
-		$this->template_plain = 'emails/plain/customer-processing-renewal-order.php';
-		$this->template_base  = plugin_dir_path( WC_Subscriptions::$plugin_file ) . 'templates/';
+		$this->template_html  = 'emails/recipient-processing-renewal-order.php';
+		$this->template_plain = 'emails/plain/recipient-processing-renewal-order.php';
+		$this->template_base  = plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/';
 
 		add_action( 'woocommerce_order_status_pending_to_processing_renewal_notification_recipient', array( $this, 'trigger' ) );
 		add_action( 'woocommerce_order_status_pending_to_on-hold_renewal_notification_recipient', array( $this, 'trigger' ) );

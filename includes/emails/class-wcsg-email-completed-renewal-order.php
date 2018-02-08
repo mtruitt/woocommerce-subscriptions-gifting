@@ -25,9 +25,9 @@ class WCSG_Email_Completed_Renewal_Order extends WCS_Email_Completed_Renewal_Ord
 		$this->heading_downloadable = $this->get_option( 'heading_downloadable', __( 'Your subscription renewal order is complete - download your files', 'woocommerce-subscriptions-gifting' ) );
 		$this->subject_downloadable = $this->get_option( 'subject_downloadable', __( 'Your {blogname} subscription renewal order from {order_date} is complete - download your files', 'woocommerce-subscriptions-gifting' ) );
 
-		$this->template_html  = 'emails/customer-completed-renewal-order.php';
-		$this->template_plain = 'emails/plain/customer-completed-renewal-order.php';
-		$this->template_base  = plugin_dir_path( WC_Subscriptions::$plugin_file ) . 'templates/';
+		$this->template_html  = 'emails/recipient-completed-renewal-order.php';
+		$this->template_plain = 'emails/plain/recipient-completed-renewal-order.php';
+		$this->template_base  = plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/';
 
 		add_action( 'woocommerce_order_status_completed_renewal_notification_recipient', array( $this, 'trigger' ) );
 
