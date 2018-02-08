@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<td class="td" scope="row" style="text-align:left;"><?php echo esc_html( date_i18n( wc_date_format(), $subscription->get_time( 'date_created', 'site' ) ) ); ?></td>
 			<td class="td" scope="row" style="text-align:left;"><?php echo esc_html( ( 0 < $subscription->get_time( 'end' ) ) ? date_i18n( wc_date_format(), $subscription->get_time( 'end', 'site' ) ) : _x( 'When Cancelled', 'Used as end date for an indefinite subscription', 'woocommerce-subscriptions-gifting' ) ); ?></td>
 			<td class="td" scope="row" style="text-align:left;">
-				<?php 
+				<?php
 				$subscription_details = array(
 					'recurring_amount'            => '',
 					'subscription_period'         => $subscription->get_billing_period(),
@@ -59,7 +59,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<td style="font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; padding:0;" valign="top" width="50%">
 				<h2><?php echo esc_html__( 'Shipping address', 'woocommerce-subscriptions-gifting' ); ?></h2>
 
-				<address class="address"><?php echo sprintf( __( '%s', 'woocommerce-subscriptions-gifting' ), $shipping ); ?></address>
+				<address class="address"><?php echo esc_html( $shipping ); ?></address>
 			</td>
 		<?php endif; ?>
 	</tr>
