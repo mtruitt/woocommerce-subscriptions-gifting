@@ -5,15 +5,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 echo $email_heading . "\n\n";
 
-echo __( 'Your subscription renewal order has been received and is now being processed. Your order details are shown below for your reference:', 'woocommerce-subscriptions' );
+echo __( 'Your subscription renewal order has been received and is now being processed. Your order details are shown below for your reference:', 'woocommerce-subscriptions-gifting' );
 
 echo "\n\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n";
 
 $subscriptions = wcs_get_subscriptions_for_renewal_order( $order );
 
 foreach ( $subscriptions as $subscription ) {
+	echo sprintf( __( 'Subscription #%s', 'woocommerce-subscriptions-gifting' ), esc_attr( $subscription->get_order_number() ) ) . "\n";
+	echo "\n" . WC_Subscriptions_Email::email_order_items_table( $subscription, array(
+		'show_download_links' => true,
+		'show_sku'            => false,
+		'show_purchase_note'  => true,
+		'show_image'          => '',
+		'image_size'          => '',
+		'plain_text'          => true,
+	) );
+}
 
-	echo sprintf( __( 'Subscription Number: %s', 'woocommerce-subscriptions-gifting' ), $subscription->get_order_number() ) . "\n";
+echo "\n";
+
+foreach ( $subscriptions as $subscription ) {
+
+	echo sprintf( __( 'Subscription #%s', 'woocommerce-subscriptions-gifting' ), $subscription->get_order_number() ) . "\n";
 
 	echo sprintf( __( 'Start Date: %s', 'woocommerce-subscriptions-gifting' ), date_i18n( wc_date_format(), $subscription->get_time( 'date_created', 'site' ) ) ) . "\n";
 
