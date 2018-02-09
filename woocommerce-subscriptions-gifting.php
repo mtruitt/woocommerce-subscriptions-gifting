@@ -71,6 +71,8 @@ require_once( 'includes/class-wcsg-admin.php' );
 
 require_once( 'includes/class-wcsg-recipient-addresses.php' );
 
+require_once( 'includes/class-wcsg-custom-start-date.php' );
+
 require_once( 'includes/wcsg-compatibility-functions.php' );
 
 class WCS_Gifting {
