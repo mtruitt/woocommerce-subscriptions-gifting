@@ -99,9 +99,9 @@ class WCS_Gifting {
 
 		add_action( 'wc_get_template', __CLASS__ . '::get_view_subscription_template', 1, 3 );
 
-		add_action( 'wc_get_template', __CLASS__ . '::get_my_subscriptions_template', 1, 3 );
-
 		add_action( 'wc_get_template', __CLASS__ . '::get_recipient_email_order_items', 1, 3 );
+
+		add_filter( 'woocommerce_get_formatted_subscription_total', __CLASS__ . '::get_formatted_recipient_total', 10, 2 );
 
 		add_filter( 'wcs_renewal_order_meta_query', __CLASS__ . '::remove_renewal_order_meta_query', 11 );
 	}
@@ -326,13 +326,6 @@ class WCS_Gifting {
 		return $located;
 	}
 
-	public static function get_my_subscriptions_template( $located, $template_name, $args ) {
-		if ( 'myaccount/subscriptions.php' == $template_name ) {
-			$located = wc_locate_template( 'my-subscriptions.php', '', plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
-		}
-		return $located;
-	}
-
 	public static function get_recipient_email_order_items( $located, $template_name, $args ) {
 		if ( 'emails/email-order-items.php' == $template_name ) {
 			$order = $args['order'];
@@ -346,6 +339,21 @@ class WCS_Gifting {
 			}
 		}
 		return $located;
+	}
+
+	/**
+	* Reformats the price of the subscription to hide it if the user is the recipient.
+	*
+	* @param string $formatted_order_total The order total formatted
+	* @param WC_Subscription $subscription Subscription object
+	*/
+	public static function get_formatted_recipient_total( $formatted_order_total, $subscription ) {
+		global $wp;
+
+		if ( is_account_page() && isset( $wp->query_vars['subscriptions']) && WCS_Gifting::is_gifted_subscription( $subscription ) && get_current_user_id() == WCS_Gifting::get_recipient_user( $subscription ) ) {
+			$formatted_order_total = '-';
+		}
+		return $formatted_order_total;
 	}
 
 	/**
