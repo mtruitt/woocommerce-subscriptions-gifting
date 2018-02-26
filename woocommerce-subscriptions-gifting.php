@@ -101,6 +101,8 @@ class WCS_Gifting {
 
 		add_action( 'wc_get_template', __CLASS__ . '::get_recipient_email_order_items', 1, 3 );
 
+		add_action( 'woocommerce_subscription_before_actions', __CLASS__ . '::add_billing_period_table_row' );
+
 		add_filter( 'woocommerce_get_formatted_subscription_total', __CLASS__ . '::get_formatted_recipient_total', 10, 2 );
 
 		add_filter( 'wcs_renewal_order_meta_query', __CLASS__ . '::remove_renewal_order_meta_query', 11 );
@@ -339,6 +341,28 @@ class WCS_Gifting {
 			}
 		}
 		return $located;
+	}
+
+	/**
+	*
+	*/
+	public static function add_billing_period_table_row( $subscription ) {
+		if ( WCS_Gifting::is_gifted_subscription( $subscription ) && get_current_user_id() == WCS_Gifting::get_recipient_user( $subscription ) ) {
+			$subscription_details = array(
+				'recurring_amount'            => '',
+				'subscription_period'         => $subscription->get_billing_period(),
+				'subscription_interval'       => $subscription->get_billing_interval(),
+				'initial_amount'              => '',
+				'use_per_slash'               => false,
+			);
+			$billing_period_string = apply_filters( 'woocommerce_subscription_price_string_details', $subscription_details, $subscription ); 
+			?>
+			<tr>
+				<td><?php echo esc_html_x( 'Renewing', 'table heading', 'woocommerce-subscriptions-gifting' ); ?></td>
+				<td><?php echo esc_html( wcs_price_string( $billing_period_string ) ); ?></td>
+			</tr>
+			<?php
+		}
 	}
 
 	/**
