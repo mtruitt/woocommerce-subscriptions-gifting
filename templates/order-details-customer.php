@@ -13,8 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<h2 class="woocommerce-column__title"><?php esc_html_e( 'Shipping address', 'woocommerce-subscriptions-gifting' ); ?></h2>
 
 			<address>
-				<?php $address = $order->get_formatted_shipping_address() ? $address : __( 'N/A', 'woocommerce-subscriptions-gifting' );
-				sprintf( __( '%s', 'woocommerce-subscriptions-gifting' ), $address ); ?>
+				<?php $address = $order->get_formatted_shipping_address() ? $order->get_formatted_shipping_address() : __( 'N/A', 'woocommerce-subscriptions-gifting' );
+				echo wp_kses_post( $address ); ?>
 			</address>
 
 		</div><!-- /.col-1 -->
