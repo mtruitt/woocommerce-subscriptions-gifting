@@ -18,8 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<th class="order-status"><span class="nobr"><?php esc_html_e( 'Status', 'woocommerce-subscriptions-gifting' ); ?></span></th>
 			<?php if ( get_current_user_id() == $subscription->get_user_id() ) : ?>
 			<th class="order-total"><span class="nobr"><?php echo esc_html_x( 'Total', 'table heading', 'woocommerce-subscriptions-gifting' ); ?></span></th>
-			<?php else : ?>
-			<th></th>
 			<?php endif; ?>
 			<th class="order-actions">&nbsp;</th>
 		</tr>
@@ -69,8 +67,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 					echo wp_kses_post( sprintf( _n( '%1$s for %2$d item', '%1$s for %2$d items', $item_count, 'woocommerce-subscriptions-gifting' ), $order->get_formatted_order_total(), $item_count ) );
 					?>
 				</td>
-				<?php else : ?>
-				<td></td>
 				<?php endif; ?>
 				<td class="order-actions">
 					<?php $actions = array();
