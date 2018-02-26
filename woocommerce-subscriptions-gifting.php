@@ -329,15 +329,12 @@ class WCS_Gifting {
 	}
 
 	public static function get_recipient_email_order_items( $located, $template_name, $args ) {
-		if ( 'emails/email-order-items.php' == $template_name ) {
-			$order = $args['order'];
-			if ( WCS_Gifting::is_gifted_subscription( wcs_get_subscription( $order->get_id() ) ) && $order->get_customer_id() != WCS_Gifting::get_recipient_user( wcs_get_subscription( $order->get_id() ) ) ) {
-				$located = wc_locate_template( 'emails/recipient-email-order-items.php', '', plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
-			}
-		} elseif ( 'emails/plain/email-order-items.php' == $template_name ) {
-			$order = $args['order'];
-			if ( WCS_Gifting::is_gifted_subscription( wcs_get_subscription( $order->get_id() ) ) && $order->get_customer_id() != WCS_Gifting::get_recipient_user( wcs_get_subscription( $order->get_id() ) ) ) {
-				$located = wc_locate_template( 'emails/plain/recipient-email-order-items.php', '', plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
+		if ( 'emails/email-order-items.php' == $template_name || 'emails/plain/email-order-items.php' == $template_name ) {
+			$subscription = $args['order'];
+
+			if ( WCS_Gifting::is_gifted_subscription( $subscription ) && $subscription->get_customer_id() != WCS_Gifting::get_recipient_user( $subscription ) ) {
+				$template = ( 'emails/email-order-items.php' == $template_name ) ? 'emails/recipient-email-order-items.php' : 'emails/plain/recipient-email-order-items.php';
+				$located = wc_locate_template( $template, '', plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
 			}
 		}
 		return $located;
