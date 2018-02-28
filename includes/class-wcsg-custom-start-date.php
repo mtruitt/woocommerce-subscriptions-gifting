@@ -105,7 +105,7 @@ class WCSG_Custom_Start_Date {
 ?>
 <fieldset class="wcsg-custom-start-date-fields">
 	<input type="checkbox" name="wcsg_use_custom_start_date" id="wcsg_custom_start_date_enabled_checkbox" value="yes" />
-	<label for="wcsg_custom_start_date_enabled_checkbox"><?php echo esc_html_x( 'Activate subscription on a specific date', 'custom start date fieldset', 'woocommerce-subscriptions-gifting' ); ?></label>
+	<label for="wcsg_custom_start_date_enabled_checkbox"><?php echo esc_html_x( 'Start subscription on a specific date', 'custom start date fieldset', 'woocommerce-subscriptions-gifting' ); ?></label>
 
 	<div class="wcsg-custom-start-date-input">
 		<input type="text" name="wcsg_custom_start_date" value="" />
