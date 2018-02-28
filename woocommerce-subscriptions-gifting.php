@@ -97,7 +97,7 @@ class WCS_Gifting {
 
 		add_action( 'wc_get_template', __CLASS__ . '::get_recent_orders_template', 1 , 3 );
 
-		add_action( 'wc_get_template', __CLASS__ . '::get_view_subscription_template', 1, 3 );
+		add_action( 'wc_get_template', __CLASS__ . '::get_subscription_totals_template', 1, 3 );
 
 		add_action( 'wc_get_template', __CLASS__ . '::get_recipient_email_order_items', 1, 3 );
 
@@ -315,19 +315,21 @@ class WCS_Gifting {
 	}
 
 	/**
-	 * Overrides the default view subscription template for gifted subscriptions
-	 */
-	public static function get_view_subscription_template( $located, $template_name, $args ) {
-		global $wp;
-		if ( 'myaccount/view-subscription.php' == $template_name ) {
-			$subscription = wcs_get_subscription( $wp->query_vars['view-subscription'] );
+	* Overrides subscription totals template.
+	*/
+	public static function get_subscription_totals_template( $located, $template_name, $args ) {
+		if( 'myaccount/subscription-totals.php' == $template_name ) {
+			$subscription = $args['subscription'];
 			if ( WCS_Gifting::is_gifted_subscription( $subscription ) && get_current_user_id() == WCS_Gifting::get_recipient_user( $subscription ) ) {
-				$located = wc_locate_template( 'view-subscription.php', '' , plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
+				$located = wc_locate_template( 'subscription-totals.php', '', plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
 			}
 		}
 		return $located;
 	}
 
+	/**
+	* Overrides email order items template.
+	*/
 	public static function get_recipient_email_order_items( $located, $template_name, $args ) {
 		if ( 'emails/email-order-items.php' == $template_name || 'emails/plain/email-order-items.php' == $template_name ) {
 			$subscription = $args['order'];
@@ -341,7 +343,9 @@ class WCS_Gifting {
 	}
 
 	/**
+	* Adds row to subscription details table that displays subscription period for recipients.
 	*
+	* @param WC_Subscription $subscription Subscription object
 	*/
 	public static function add_billing_period_table_row( $subscription ) {
 		if ( WCS_Gifting::is_gifted_subscription( $subscription ) && get_current_user_id() == WCS_Gifting::get_recipient_user( $subscription ) ) {
