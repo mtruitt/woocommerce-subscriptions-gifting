@@ -318,7 +318,7 @@ class WCS_Gifting {
 	* Overrides subscription totals template.
 	*/
 	public static function get_subscription_totals_template( $located, $template_name, $args ) {
-		if( 'myaccount/subscription-totals.php' == $template_name ) {
+		if ( 'myaccount/subscription-totals.php' == $template_name ) {
 			$subscription = $args['subscription'];
 			if ( WCS_Gifting::is_gifted_subscription( $subscription ) && get_current_user_id() == WCS_Gifting::get_recipient_user( $subscription ) ) {
 				$located = wc_locate_template( 'subscription-totals.php', '', plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
@@ -357,7 +357,7 @@ class WCS_Gifting {
 				'initial_amount'              => '',
 				'use_per_slash'               => false,
 			);
-			$billing_period_string = apply_filters( 'woocommerce_subscription_price_string_details', $subscription_details, $subscription ); 
+			$billing_period_string = apply_filters( 'woocommerce_subscription_price_string_details', $subscription_details, $subscription );
 			?>
 			<tr>
 				<td><?php echo esc_html_x( 'Renewing', 'table heading', 'woocommerce-subscriptions-gifting' ); ?></td>
@@ -376,7 +376,7 @@ class WCS_Gifting {
 	public static function get_formatted_recipient_total( $formatted_order_total, $subscription ) {
 		global $wp;
 
-		if ( is_account_page() && isset( $wp->query_vars['subscriptions']) && WCS_Gifting::is_gifted_subscription( $subscription ) && get_current_user_id() == WCS_Gifting::get_recipient_user( $subscription ) ) {
+		if ( is_account_page() && isset( $wp->query_vars['subscriptions'] ) && WCS_Gifting::is_gifted_subscription( $subscription ) && get_current_user_id() == WCS_Gifting::get_recipient_user( $subscription ) ) {
 			$formatted_order_total = '-';
 		}
 		return $formatted_order_total;
