@@ -31,7 +31,7 @@ class WCSG_Custom_Start_Date {
 		add_filter( 'woocommerce_subscription_get_date_created', array( $this, 'maybe_fake_start_date_in_admin' ), 10, 2 );
 
 		// Take care of activating subscription when the time comes.
-		add_action( 'wcgs_scheduled_subscription_activation', array( $this, 'maybe_activate_subscription' ) );
+		add_action( 'wcgs_scheduled_subscription_start', array( $this, 'maybe_activate_subscription' ) );
 	}
 
 	/**
@@ -206,7 +206,7 @@ class WCSG_Custom_Start_Date {
 		$subscription->save();
 
 		// Schedule activation of this subscription. $start_date is UTC.
-		wc_schedule_single_action( wcs_date_to_time( $start_date ), 'wcgs_scheduled_subscription_activation', array( 'subscription_id' => $subscription->get_id() ) );
+		wc_schedule_single_action( wcs_date_to_time( $start_date ), 'wcgs_scheduled_subscription_start', array( 'subscription_id' => $subscription->get_id() ) );
 
 		// Prevent WC_Subscriptions_Order from changing the subscription's status to "Active" once the initial order is paid.
 		remove_action( 'woocommerce_order_status_changed', 'WC_Subscriptions_Order::maybe_record_subscription_payment', 9, 3 );
