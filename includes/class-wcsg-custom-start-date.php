@@ -180,7 +180,7 @@ class WCSG_Custom_Start_Date {
 		$start_date = ! empty( $cart_item['wcsg_custom_start_date'] ) ? $cart_item['wcsg_custom_start_date'] : '';
 		if ( $start_date ) {
 			$title .= '<div class="wcsg-cart-item-custom-start-date">';
-			$title .= sprintf( _x( 'Starts on: %s', 'custom start date', 'woocommerce-subscriptions-gifting' ), '<span>' . date_i18n( wc_date_format(), wcs_date_to_time( $start_date ) ) . '</span>' );
+			$title .= sprintf( _x( 'Starts on: %s', 'custom start date', 'woocommerce-subscriptions-gifting' ), '<span>' . date_i18n( wc_date_format(), wcs_date_to_time( get_date_from_gmt( $start_date ) ) ) . '</span>' );
 			$title .= '</div>';
 		}
 
