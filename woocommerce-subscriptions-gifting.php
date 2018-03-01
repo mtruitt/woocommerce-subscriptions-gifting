@@ -322,7 +322,6 @@ class WCS_Gifting {
 			$subscription = $args['subscription'];
 			if ( WCS_Gifting::is_gifted_subscription( $subscription ) && get_current_user_id() == WCS_Gifting::get_recipient_user( $subscription ) ) {
 				$located = wc_locate_template( 'subscription-totals.php', '', plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
-				add_filter( 'woocommerce_order_formatted_billing_address', '__return_empty_array' );
 			}
 		}
 		return $located;
