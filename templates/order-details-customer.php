@@ -1,4 +1,11 @@
 <?php
+/**
+ * Customer order details
+ *
+ * Shows only the shipping address to the recipient on the view subscription page.
+ *
+ * @version 2.0.0
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

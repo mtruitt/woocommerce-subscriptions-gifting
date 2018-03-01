@@ -71,6 +71,8 @@ require_once( 'includes/class-wcsg-admin.php' );
 
 require_once( 'includes/class-wcsg-recipient-addresses.php' );
 
+require_once( 'includes/class-wcsg-template-loader.php' );
+
 require_once( 'includes/wcsg-compatibility-functions.php' );
 
 class WCS_Gifting {
@@ -94,12 +96,6 @@ class WCS_Gifting {
 
 		// Needs to run after Subscriptions has loaded its dependant classes
 		add_action( 'plugins_loaded', __CLASS__ . '::load_dependant_classes' , 11 );
-
-		add_action( 'wc_get_template', __CLASS__ . '::get_recent_orders_template', 1 , 3 );
-
-		add_action( 'wc_get_template', __CLASS__ . '::get_subscription_totals_template', 1, 3 );
-
-		add_action( 'wc_get_template', __CLASS__ . '::get_recipient_email_order_items', 1, 3 );
 
 		add_action( 'woocommerce_subscription_before_actions', __CLASS__ . '::add_billing_period_table_row' );
 
@@ -302,51 +298,10 @@ class WCS_Gifting {
 	}
 
 	/**
-	 * Overrides the default recent order template for gifted subscriptions
+	 * Adds row to subscription details table that displays subscription period for recipients.
+	 *
+	 * @param WC_Subscription $subscription Subscription object
 	 */
-	public static function get_recent_orders_template( $located, $template_name, $args ) {
-		if ( 'myaccount/related-orders.php' == $template_name ) {
-			$subscription = $args['subscription'];
-			if ( WCS_Gifting::is_gifted_subscription( $subscription ) ) {
-				$located = wc_locate_template( 'related-orders.php', '', plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
-			}
-		}
-		return $located;
-	}
-
-	/**
-	* Overrides subscription totals template.
-	*/
-	public static function get_subscription_totals_template( $located, $template_name, $args ) {
-		if ( 'myaccount/subscription-totals.php' == $template_name ) {
-			$subscription = $args['subscription'];
-			if ( WCS_Gifting::is_gifted_subscription( $subscription ) && get_current_user_id() == WCS_Gifting::get_recipient_user( $subscription ) ) {
-				$located = wc_locate_template( 'subscription-totals.php', '', plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
-			}
-		}
-		return $located;
-	}
-
-	/**
-	* Overrides email order items template.
-	*/
-	public static function get_recipient_email_order_items( $located, $template_name, $args ) {
-		if ( 'emails/email-order-items.php' == $template_name || 'emails/plain/email-order-items.php' == $template_name ) {
-			$subscription = $args['order'];
-
-			if ( WCS_Gifting::is_gifted_subscription( $subscription ) && $subscription->get_customer_id() != WCS_Gifting::get_recipient_user( $subscription ) ) {
-				$template = ( 'emails/email-order-items.php' == $template_name ) ? 'emails/recipient-email-order-items.php' : 'emails/plain/recipient-email-order-items.php';
-				$located = wc_locate_template( $template, '', plugin_dir_path( WCS_Gifting::$plugin_file ) . 'templates/' );
-			}
-		}
-		return $located;
-	}
-
-	/**
-	* Adds row to subscription details table that displays subscription period for recipients.
-	*
-	* @param WC_Subscription $subscription Subscription object
-	*/
 	public static function add_billing_period_table_row( $subscription ) {
 		if ( WCS_Gifting::is_gifted_subscription( $subscription ) && get_current_user_id() == WCS_Gifting::get_recipient_user( $subscription ) ) {
 			$subscription_details = array(
@@ -367,11 +322,11 @@ class WCS_Gifting {
 	}
 
 	/**
-	* Reformats the price of the subscription to hide it if the user is the recipient.
-	*
-	* @param string $formatted_order_total The order total formatted
-	* @param WC_Subscription $subscription Subscription object
-	*/
+	 * Reformats the price of the subscription to hide it if the user is the recipient.
+	 *
+	 * @param string $formatted_order_total The order total formatted
+	 * @param WC_Subscription $subscription Subscription object
+	 */
 	public static function get_formatted_recipient_total( $formatted_order_total, $subscription ) {
 		global $wp;
 
@@ -704,6 +659,13 @@ class WCS_Gifting {
 	 */
 	public static function maybe_flush_rewrite_rules() {
 		_deprecated_function( __METHOD__, '2.0.0', 'flush_rewrite_rules()' );
+	}
+
+	/**
+	 * Overrides the default recent order template for gifted subscriptions
+	 */
+	public static function get_recent_orders_template( $located, $template_name, $args ) {
+		_deprecated_function( __FUNCTION__, '2.0.0', 'WCSG_Template_Loader::get_recent_orders_template()' );
 	}
 }
 WCS_Gifting::init();

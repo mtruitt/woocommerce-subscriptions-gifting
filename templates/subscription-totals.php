@@ -1,9 +1,10 @@
 <?php
 /**
- * Subscription detauks
+ * Subscription totals
  *
  * Shows the info of a particular subscription without pricing for the recipient on the account page
  *
+ * @version 2.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
