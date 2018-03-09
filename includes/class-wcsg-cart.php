@@ -218,6 +218,7 @@ class WCSG_Cart {
 	public static function get_recipient_from_cart_item( $cart_item ) {
 		$recipient_email   = '';
 		$recipient_user_id = '';
+		$user_id = get_current_user_id();
 
 		if ( isset( $cart_item['subscription_renewal'] ) && WCS_Gifting::is_gifted_subscription( $cart_item['subscription_renewal']['subscription_id'] ) ) {
 			$recipient_id    = WCS_Gifting::get_recipient_user( wcs_get_subscription( $cart_item['subscription_renewal']['subscription_id'] ) );
@@ -232,7 +233,7 @@ class WCSG_Cart {
 
 			// Create a new user if the recipient's email doesn't already exist
 			if ( ! $recipient_user_id ) {
-				$recipient_user_id = WCS_Gifting::create_recipient_user( $recipient_email );
+				$recipient_user_id = WCS_Gifting::create_recipient_user( $recipient_email, $user_id );
 			}
 		}
 
