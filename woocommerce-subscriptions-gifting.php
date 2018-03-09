@@ -515,7 +515,7 @@ class WCS_Gifting {
 	 * @param string $recipient_email
 	 * @return int $recipient_user_id
 	 */
-	public static function create_recipient_user( $recipient_email ) {
+	public static function create_recipient_user( $recipient_email, $user_id ) {
 		$username = explode( '@', $recipient_email );
 		$username = sanitize_user( $username[0], true );
 		$counter  = 1;
@@ -532,6 +532,42 @@ class WCS_Gifting {
 
 		// set a flag to force the user to update/set account information on login
 		update_user_meta( $recipient_user_id, 'wcsg_update_account', 'true' );
+
+		// get current user shipping information
+		$current_user = array(
+			'first_name' => get_user_meta( $user_id, 'shipping_first_name', true ),
+			'last_name'  => get_user_meta( $user_id, 'shipping_last_name', true ),
+			'company'    => get_user_meta( $user_id, 'shipping_company', true ),
+			'address_1'  => get_user_meta( $user_id, 'shipping_address_1', true ),
+			'address_2'  => get_user_meta( $user_id, 'shipping_address_2', true ),
+			'city'       => get_user_meta( $user_id, 'shipping_city', true ),
+			'state'      => get_user_meta( $user_id, 'shipping_state', true ),
+			'postcode'   => get_user_meta( $user_id, 'shipping_postcode', true ),
+			'country'    => get_user_meta( $user_id, 'shipping_country', true ),
+		);
+
+		// update recipient information provided from current user
+		update_user_meta( $recipient_user_id, 'shipping_first_name', $current_user['first_name'] );
+		update_user_meta( $recipient_user_id, 'shipping_last_name', $current_user['last_name'] );
+		update_user_meta( $recipient_user_id, 'shipping_company', $current_user['company'] );
+		update_user_meta( $recipient_user_id, 'shipping_address_1', $current_user['address_1'] );
+		update_user_meta( $recipient_user_id, 'shipping_address_2', $current_user['address_2'] );
+		update_user_meta( $recipient_user_id, 'shipping_city', $current_user['city'] );
+		update_user_meta( $recipient_user_id, 'shipping_state', $current_user['state'] );
+		update_user_meta( $recipient_user_id, 'shipping_postcode', $current_user['postcode'] );
+		update_user_meta( $recipient_user_id, 'shipping_country', $current_user['country'] );
+
+		// reset current user shipping information
+		update_user_meta( $user_id, 'shipping_first_name', '' );
+		update_user_meta( $user_id, 'shipping_last_name', '' );
+		update_user_meta( $user_id, 'shipping_company', '' );
+		update_user_meta( $user_id, 'shipping_address_1', '' );
+		update_user_meta( $user_id, 'shipping_address_2', '' );
+		update_user_meta( $user_id, 'shipping_city', '' );
+		update_user_meta( $user_id, 'shipping_state', '' );
+		update_user_meta( $user_id, 'shipping_postcode', '' );
+		update_user_meta( $user_id, 'shipping_country', '' );
+
 		return $recipient_user_id;
 	}
 
